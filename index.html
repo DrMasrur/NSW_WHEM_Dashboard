@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NSW WHEM Dashboard</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <h1>NSW WHEM Dashboard</h1>
+        <label for="districtFilter" class="filter">
+          District
+          <select id="districtFilter"></select>
+        </label>
+      </header>
+
+      <section class="cards" aria-label="Summary metrics">
+        <article class="card">
+          <h2>Total Facilities</h2>
+          <p id="totalFacilities">0</p>
+        </article>
+        <article class="card">
+          <h2>Average Occupancy</h2>
+          <p id="avgOccupancy">0%</p>
+        </article>
+        <article class="card">
+          <h2>Available Beds</h2>
+          <p id="availableBeds">0</p>
+        </article>
+      </section>
+
+      <section class="panel" aria-labelledby="occupancy-heading">
+        <h2 id="occupancy-heading">Occupancy by Facility</h2>
+        <div id="occupancyChart" class="bars" role="img" aria-label="Bar chart of occupancy by facility"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="table-heading">
+        <h2 id="table-heading">Facility Snapshot</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Facility</th>
+                <th>District</th>
+                <th>Total Beds</th>
+                <th>Occupied Beds</th>
+                <th>Occupancy</th>
+              </tr>
+            </thead>
+            <tbody id="facilityTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
