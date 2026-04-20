@@ -44,7 +44,7 @@ function renderSummary(rows) {
 }
 
 function renderBars(rows) {
-  occupancyChart.innerHTML = '';
+  occupancyChart.replaceChildren();
 
   rows.forEach((row) => {
     const pct = Math.round(toPercentage(row.occupiedBeds, row.totalBeds));
@@ -76,7 +76,7 @@ function renderBars(rows) {
 }
 
 function renderTable(rows) {
-  facilityTableBody.innerHTML = '';
+  facilityTableBody.replaceChildren();
 
   rows.forEach((row) => {
     const pct = Math.round(toPercentage(row.occupiedBeds, row.totalBeds));
@@ -101,7 +101,7 @@ function renderDashboard() {
 
 function initializeFilter() {
   const districts = ['All', ...new Set(facilityData.map((item) => item.district))];
-  districtFilter.innerHTML = '';
+  districtFilter.replaceChildren();
   districts.forEach((district) => {
     const option = document.createElement('option');
     option.value = district;
