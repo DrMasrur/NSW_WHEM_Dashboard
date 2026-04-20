@@ -14,7 +14,7 @@ const availableBeds = document.getElementById('availableBeds');
 const occupancyChart = document.getElementById('occupancyChart');
 const facilityTableBody = document.getElementById('facilityTableBody');
 
-function toPct(occupiedBeds, totalBeds) {
+function toPercentage(occupiedBeds, totalBeds) {
   return totalBeds ? (occupiedBeds / totalBeds) * 100 : 0;
 }
 
@@ -39,7 +39,7 @@ function renderSummary(rows) {
   );
 
   totalFacilities.textContent = String(facilities);
-  avgOccupancy.textContent = `${Math.round(toPct(bedTotals.occupied, bedTotals.total))}%`;
+  avgOccupancy.textContent = `${Math.round(toPercentage(bedTotals.occupied, bedTotals.total))}%`;
   availableBeds.textContent = String(Math.max(bedTotals.total - bedTotals.occupied, 0));
 }
 
@@ -47,15 +47,29 @@ function renderBars(rows) {
   occupancyChart.innerHTML = '';
 
   rows.forEach((row) => {
-    const pct = Math.round(toPct(row.occupiedBeds, row.totalBeds));
+    const pct = Math.round(toPercentage(row.occupiedBeds, row.totalBeds));
 
     const wrapper = document.createElement('div');
     wrapper.className = 'bar-row';
-    wrapper.innerHTML = `
-      <span class="bar-label">${row.facility}</span>
-      <div class="bar-track"><div class="bar-fill" style="width: ${pct}%"></div></div>
-      <span class="bar-value">${pct}%</span>
-    `;
+    const label = document.createElement('span');
+    label.className = 'bar-label';
+    label.textContent = row.facility;
+
+    const track = document.createElement('div');
+    track.className = 'bar-track';
+
+    const fill = document.createElement('div');
+    fill.className = 'bar-fill';
+    fill.style.width = `${pct}%`;
+    track.appendChild(fill);
+
+    const value = document.createElement('span');
+    value.className = 'bar-value';
+    value.textContent = `${pct}%`;
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(track);
+    wrapper.appendChild(value);
 
     occupancyChart.appendChild(wrapper);
   });
@@ -65,15 +79,14 @@ function renderTable(rows) {
   facilityTableBody.innerHTML = '';
 
   rows.forEach((row) => {
-    const pct = Math.round(toPct(row.occupiedBeds, row.totalBeds));
+    const pct = Math.round(toPercentage(row.occupiedBeds, row.totalBeds));
     const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${row.facility}</td>
-      <td>${row.district}</td>
-      <td>${row.totalBeds}</td>
-      <td>${row.occupiedBeds}</td>
-      <td>${pct}%</td>
-    `;
+    const values = [row.facility, row.district, row.totalBeds, row.occupiedBeds, `${pct}%`];
+    values.forEach((value) => {
+      const td = document.createElement('td');
+      td.textContent = String(value);
+      tr.appendChild(td);
+    });
 
     facilityTableBody.appendChild(tr);
   });
@@ -88,7 +101,13 @@ function renderDashboard() {
 
 function initializeFilter() {
   const districts = ['All', ...new Set(facilityData.map((item) => item.district))];
-  districtFilter.innerHTML = districts.map((district) => `<option>${district}</option>`).join('');
+  districtFilter.innerHTML = '';
+  districts.forEach((district) => {
+    const option = document.createElement('option');
+    option.value = district;
+    option.textContent = district;
+    districtFilter.appendChild(option);
+  });
   districtFilter.addEventListener('change', renderDashboard);
 }
 
