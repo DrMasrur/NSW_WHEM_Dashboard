@@ -1,0 +1,11 @@
+streamlit>=1.20
+pandas
+plotly
+geopandas
+shapely
+fiona
+pyproj
+
+# Optional / runtime helpers
+rtree
+numpy
